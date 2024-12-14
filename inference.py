@@ -4,7 +4,11 @@ from omegaconf import OmegaConf
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 import os 
+import sys
+sys.path.insert(0, '/home/airobots/Robot_GAI/attention-refocusing/transformers_refocus') 
 from transformers import CLIPProcessor, CLIPModel
+sys.path.insert(0, "/home/airobots/Robot_GAI/attention-refocusing/")
+os.chdir("/home/airobots/Robot_GAI/attention-refocusing/")
 from copy import deepcopy
 import torch 
 from ldm.util import instantiate_from_config
@@ -479,7 +483,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--folder", type=str,  default="visual", help="root folder for output")
-    parser.add_argument('--ckpt', type=str, default='gligen_checkpoints/diffusion_pytorch_model.bin', help='path to the checkpoint')
+    parser.add_argument('--ckpt', type=str, default='./gligen_checkpoints/diffusion_pytorch_model.bin', help='path to the checkpoint')
 
     parser.add_argument("--batch_size", type=int, default=1, help="")
     parser.add_argument("--no_plms", action='store_true', help="use DDIM instead. WARNING: I did not test the code yet")
