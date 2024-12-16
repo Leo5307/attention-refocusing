@@ -16,3 +16,5 @@ data_evaluate_LLM/eval_metrics/detection/UniDet-master/detectron2/*
 __pycache__/*
 __pycache__
 size.txt
+transformers_refocus
+gligen_checkpoints

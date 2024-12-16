@@ -1,14 +1,14 @@
 import argparse
 from PIL import Image, ImageDraw
 from omegaconf import OmegaConf
-from ldm.models.diffusion.ddim import DDIMSampler
-from ldm.models.diffusion.plms import PLMSSampler
 import os 
 import sys
-sys.path.insert(0, '/home/airobots/Robot_GAI/attention-refocusing/transformers_refocus') 
+# sys.path.insert(0, '/home/airobots/Robot_GAI/attention_refocusing/transformers_refocus') 
 from transformers import CLIPProcessor, CLIPModel
-sys.path.insert(0, "/home/airobots/Robot_GAI/attention-refocusing/")
-os.chdir("/home/airobots/Robot_GAI/attention-refocusing/")
+# sys.path.insert(0, "/home/airobots/Robot_GAI/attention_refocusing/")
+# os.chdir("/home/airobots/Robot_GAI/attention_refocusing/")
+from ldm.models.diffusion.ddim import DDIMSampler
+from ldm.models.diffusion.plms import PLMSSampler
 from copy import deepcopy
 import torch 
 from ldm.util import instantiate_from_config
