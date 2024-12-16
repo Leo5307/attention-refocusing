@@ -90,8 +90,8 @@ def generate_box_gpt4(inputs):
         boxes_of_object.append(text_list(b_split[1]))
     return name_objects, boxes_of_object
 
-def draw_box_2(text, boxes,output_folder, img_name):
-    width, height = 512, 512
+def draw_box_2(text, boxes,output_folder, img_name,image_size=[512,512]):
+    width, height = image_size
     image = Image.new('RGB', (width, height), 'gray')
     
     draw = ImageDraw.Draw(image)
@@ -99,12 +99,12 @@ def draw_box_2(text, boxes,output_folder, img_name):
         for box in bbox:
             if i==0:
                
-                draw.rectangle([(box[0] * 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='red', width=6)
+                draw.rectangle([(box[0] * width, box[1]* height),(box[2]* width, box[3]* height)], outline='red', width=6)
                 
             elif i==1:
-                draw.rectangle([(box[0]* 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='green', width=6)
+                draw.rectangle([(box[0]* width, box[1]* height),(box[2]* width, box[3]* height)], outline='green', width=6)
             else:
-                draw.rectangle([(box[0]* 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='blue', width=6)
+                draw.rectangle([(box[0]* width, box[1]* height),(box[2]* width, box[3]* height)], outline='blue', width=6)
     image.save(os.path.join(output_folder, img_name))
 
 def text_list(text):
@@ -151,6 +151,7 @@ def draw_box(text, boxes,output_folder, img_name):
     image.save(os.path.join(output_folder, img_name))
 
 def save_img(folder_name, img, prompt, iter_id, img_id):
+
     os.makedirs(folder_name, exist_ok=True)
     img_name = str(img_id) + '_' + str(iter_id) + '_' + prompt.replace(' ','_')+'.jpg'
     img.save(os.path.join(folder_name, img_name))
@@ -186,10 +187,11 @@ def format_box(names, boxes):
             boxes[i] = boxes[i]
         resultboxes.append([boxes[i]])
     return result_name, np.array(resultboxes)
-
+# remove the number in the text
 def remove_numbers(text):
     result = ''.join([char for char in text if not char.isdigit()])
     return result
+# intergrate the box and the phrase and format the bbox
 def process_box_phrase(names, bboxes):
     d = {}
     for i, phrase in enumerate(names):
@@ -203,12 +205,17 @@ def process_box_phrase(names, bboxes):
                 d[n].append(np.array(bboxes[i])/512)
     return d
 
+
+# [[2], [7]]  # 表示 "dog" 在 prompt 的第2個單詞，"balls" 在第7個單詞
+
 def Pharse2idx_2(prompt, name_box):
-    prompt = prompt.replace('.','')
-    prompt = prompt.replace(',','')
+    # name_box = {'dog': [0, 0, 0, 0], 'balls': [0, 0, 0, 0]} # output of the gpt model # name_box already /512 when process_box_phrase
+    # prompt = "a dog on the right of a balls" from the user
+    prompt = prompt.replace('.','') # remove the dot at the end of the prompt
+    prompt = prompt.replace(',','') # remove the comma at the end of the prompt
     prompt_list = prompt.strip('.').split(' ')
-    object_positions = []
-    bbox_to_self_att = []
+    object_positions = [] # store the position of object in the prompt
+    bbox_to_self_att = [] 
     for obj in name_box.keys():
         obj_position = []
         in_prompt = False
@@ -219,7 +226,7 @@ def Pharse2idx_2(prompt, name_box):
                 in_prompt = True
             elif word +'s' in prompt_list:
                 obj_first_index = prompt_list.index(word+'s') + 1
-                obj_position.append(obj_first_index)
+                obj_position.append(obj_first_index) 
                 in_prompt = True
             elif word +'es' in prompt_list:
                 obj_first_index = prompt_list.index(word+'es') + 1
@@ -229,5 +236,6 @@ def Pharse2idx_2(prompt, name_box):
             bbox_to_self_att.append(np.array(name_box[obj]))
         
             object_positions.append(obj_position)
-
+    print('bbox_to_self_att', bbox_to_self_att)
+    print('prompt', prompt_list)
     return object_positions, bbox_to_self_att
