@@ -90,8 +90,8 @@ def generate_box_gpt4(inputs):
         boxes_of_object.append(text_list(b_split[1]))
     return name_objects, boxes_of_object
 
-def draw_box_2(text, boxes,output_folder, img_name,image_size=[512,512]):
-    width, height = image_size
+def draw_box_2(text, boxes,output_folder, img_name):
+    width, height = 512, 512
     image = Image.new('RGB', (width, height), 'gray')
     
     draw = ImageDraw.Draw(image)
@@ -99,12 +99,12 @@ def draw_box_2(text, boxes,output_folder, img_name,image_size=[512,512]):
         for box in bbox:
             if i==0:
                
-                draw.rectangle([(box[0] * width, box[1]* height),(box[2]* width, box[3]* height)], outline='red', width=6)
+                draw.rectangle([(box[0] * 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='red', width=6)
                 
             elif i==1:
-                draw.rectangle([(box[0]* width, box[1]* height),(box[2]* width, box[3]* height)], outline='green', width=6)
+                draw.rectangle([(box[0]* 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='green', width=6)
             else:
-                draw.rectangle([(box[0]* width, box[1]* height),(box[2]* width, box[3]* height)], outline='blue', width=6)
+                draw.rectangle([(box[0]* 512, box[1]* 512),(box[2]* 512, box[3]* 512)], outline='blue', width=6)
     image.save(os.path.join(output_folder, img_name))
 
 def text_list(text):
@@ -151,7 +151,6 @@ def draw_box(text, boxes,output_folder, img_name):
     image.save(os.path.join(output_folder, img_name))
 
 def save_img(folder_name, img, prompt, iter_id, img_id):
-
     os.makedirs(folder_name, exist_ok=True)
     img_name = str(img_id) + '_' + str(iter_id) + '_' + prompt.replace(' ','_')+'.jpg'
     img.save(os.path.join(folder_name, img_name))

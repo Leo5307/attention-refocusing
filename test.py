@@ -21,7 +21,7 @@ from functools import partial
 import torchvision.transforms.functional as F
 import torchvision.transforms.functional as TF
 import torchvision.transforms as transforms
-from chatGPT import read_txt_hrs, load_gt, load_box, save_img, read_csv, generate_box_gpt4, Pharse2idx_2, process_box_phrase, format_box, draw_box_2
+from chatGPTv2 import read_txt_hrs, load_gt, load_box, save_img, read_csv, generate_box_gpt4, Pharse2idx_2, process_box_phrase, format_box, draw_box_2
 import torchvision.transforms as transforms
 from pytorch_lightning import seed_everything
 from PIL import Image, ImageDraw, ImageFont

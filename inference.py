@@ -517,7 +517,9 @@ if __name__ == "__main__":
     models = load_ckpt(meta_list[0]["ckpt"])
     i=0
     while True:
-        user_input = input("Please enter the prompt (type 'quit' to stop): ")
+        # user_input = input("Please enter the prompt (type 'quit' to stop): ")
+        # user_input = "Top-down view of a plate with a whole pear, neatly arranged spoon, fork, and knife beside it, on a clean wooden table."
+        user_input = "Top-down view of a whole pear on a plate, with a fork, knife, and spoon neatly arranged beside it, placed on a clean wooden table"
         if user_input.lower() == 'quit':
             break
         else:
